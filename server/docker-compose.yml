@@ -12,7 +12,7 @@ services:
       - kafka
     environment:
       SPRING_DATA_MONGODB_HOST: mongodb
-      ETHEREUM_NODE_URL: http://eth-node:8545
+      ETHEREUM_NODE_URL: $ETHEREUM_NODE_URL
       ZOOKEEPER_ADDRESS: zookeeper:2181
       KAFKA_ADDRESSES: kafka:19092
     networks:
