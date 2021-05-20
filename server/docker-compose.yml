@@ -45,6 +45,7 @@ services:
       - "0.0.0.0"
       - "--http.api"
       - "txpool,eth,web3,admin,personal,net"
+    networks:
       default:
         aliases:
           - eth-node
