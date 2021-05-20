@@ -3,34 +3,48 @@ version: '3'
 services:
   eventeum:
     # image: eventeum/eventeum:latest
+    restart: always
     build: ..
     ports:
     - "8060:8060"
     depends_on:
-      # - parity
+      - geth
       - mongodb
       - kafka
     environment:
       SPRING_DATA_MONGODB_HOST: mongodb
-      ETHEREUM_NODE_URL: $ETHEREUM_NODE_URL
+      ETHEREUM_NODE_URL: http://eth-node:8545
       ZOOKEEPER_ADDRESS: zookeeper:2181
       KAFKA_ADDRESSES: kafka:19092
     networks:
       - default
 
-  parity:
-    build:
-      context: .
-      dockerfile: Dockerfile.ParityNode
+  ### geth ################################################
+  geth:
+    image: ethereum/client-go
+    restart: always
+    container_name: geth
     ports:
-      - "8545:8545"
-      - "8180:8180"
-      - "8546:8546"
+      - 8545:8545
+      - 30303:30303
     volumes:
-      - $HOME/parity/data:/root/.local/share/io.parity.ethereum
-      - $HOME/parity/log:/data/parity-logs
-    tty: true
-    networks:
+      - ./geth-data:/root
+    command:
+      - "--cache"
+      - "1024"
+      - "--syncmode"
+      - "fast"
+      - --networkid
+      - "1"
+      - "--maxpeers"
+      - "24"
+      - "--http"
+      - "--http.port"
+      - "8545"
+      - "--http.addr"
+      - "0.0.0.0"
+      - "--http.api"
+      - "txpool,eth,web3,admin,personal,net"
       default:
         aliases:
           - eth-node
