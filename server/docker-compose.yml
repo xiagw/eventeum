@@ -30,19 +30,13 @@ services:
     volumes:
       - ./geth-data:/root
     command:
-      - "--cache"
-      - "1024"
-      - "--syncmode"
-      - "fast"
-      - --networkid
-      - "1"
-      - "--maxpeers"
-      - "24"
+      - "--cache 1024"
+      - "--syncmode fast"
+      - "--networkid 1"
+      - "--maxpeers 24"
       - "--http"
-      - "--http.port"
-      - "8545"
-      - "--http.addr"
-      - "0.0.0.0"
+      - "--http.port 8545"
+      - "--http.addr 0.0.0.0"
       - "--http.api"
       - "txpool,eth,web3,admin,personal,net"
     networks:
