@@ -8,7 +8,7 @@ services:
     ports:
     - "8060:8060"
     depends_on:
-      - geth
+      - parity
       - mongodb
       - kafka
     environment:
@@ -18,6 +18,23 @@ services:
       KAFKA_ADDRESSES: kafka:19092
     networks:
       - default
+
+  parity:
+    build:
+      context: .
+      dockerfile: Dockerfile.ParityNode
+    ports:
+      - "8545:8545"
+      - "8180:8180"
+      - "8546:8546"
+    volumes:
+      - $HOME/parity/data:/root/.local/share/io.parity.ethereum
+      - $HOME/parity/log:/data/parity-logs
+    tty: true
+    networks:
+      default:
+        aliases:
+          - eth-node
 
   ### geth ################################################
   geth:
