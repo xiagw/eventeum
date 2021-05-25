@@ -4,7 +4,7 @@ WORKDIR /home/parity
 ENV NODE_PATH /usr/lib/node_modules
 # Install
 RUN apt-get update \
-    && apt-get -yqq --no-install-recommends install git build-essential nodejs \
+    && apt-get -yqq --no-install-recommends install git wget ca-certificates build-essential nodejs \
     && curl -LO https://deb.nodesource.com/setup_10.x \
     && chmod +x setup_10.x \
     && ./setup_10.x \
