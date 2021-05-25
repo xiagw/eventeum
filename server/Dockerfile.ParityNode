@@ -5,7 +5,7 @@ ENV NODE_PATH /usr/lib/node_modules
 # Install
 RUN apt-get update \
     && apt-get -yqq --no-install-recommends install git wget ca-certificates build-essential nodejs \
-    && curl -fsSL https://deb.nodesource.com/setup_12.x | bash -c \
+    && bash -c $(curl -fsSL https://deb.nodesource.com/setup_12.x) \
     && npm install -g web3@1.3.6 --unsafe-perm \
     && mkdir -p /data/parity-logs \
     && chown -R parity:parity /data \
