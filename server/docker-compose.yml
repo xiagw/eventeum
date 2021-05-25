@@ -24,12 +24,12 @@ services:
       context: .
       dockerfile: Dockerfile.ParityNode
     ports:
-      - "8545:8545"
       - "8180:8180"
+      - "8545:8545"
       - "8546:8546"
     volumes:
-      - ./parity/data:/root/.local/share/io.parity.ethereum
-      - ./parity/log:/data/parity-logs
+      - ./parity-data:/root/.local/share/io.parity.ethereum
+      - ./parity-data/log:/data/parity-logs
     tty: true
     networks:
       default:

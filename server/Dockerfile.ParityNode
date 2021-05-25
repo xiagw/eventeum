@@ -1,4 +1,4 @@
-FROM parity/parity:v2.5.1
+FROM parity/parity:v2.7.2-stable
 USER root
 WORKDIR /home/parity
 ENV NODE_PATH /usr/lib/node_modules
