@@ -28,8 +28,8 @@ services:
       - "8180:8180"
       - "8546:8546"
     volumes:
-      - $HOME/parity/data:/root/.local/share/io.parity.ethereum
-      - $HOME/parity/log:/data/parity-logs
+      - ./parity/data:/root/.local/share/io.parity.ethereum
+      - ./parity/log:/data/parity-logs
     tty: true
     networks:
       default:
