@@ -6,7 +6,7 @@ services:
     restart: always
     build: ..
     ports:
-    - "8060:8060"
+      - "8060:8060"
     depends_on:
       - parity
       - mongodb
@@ -40,7 +40,7 @@ services:
   geth:
     image: ethereum/client-go
     restart: always
-    container_name: geth
+    # container_name: geth
     ports:
       - 8545:8545
       - 30303:30303
