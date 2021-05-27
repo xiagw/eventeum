@@ -58,10 +58,10 @@ eventStore:
   eventPath: /event
   latestBlockPath: /latestblock
 database:
-  type: MONGO
+  type: SQL
 
 broadcaster:
-  type: KAFKA
+  type: PULSAR
   cache:
     expirationMillis: 6000000
   event:
@@ -71,6 +71,56 @@ broadcaster:
       numBlocksToWaitBeforeInvalidating: 2
   multiInstance: false
   enableBlockNotifications: true
+
+
+# pulsar
+pulsar:
+  # See https://github.com/apache/pulsar/blob/master/pulsar-client/src/main/java/org/apache/pulsar/client/impl/conf/ClientConfigurationData.java
+  # for available options
+  config:
+    serviceUrl: pulsar://localhost:6650
+
+  # To enable authentication, uncomment this following section
+  # authentication:
+  #   plugin-class-name: org.apache.pulsar.client.impl.auth.AuthenticationBasic
+  #   params:
+  #     userId: my-username
+  #     password: my-password
+
+  # Topic can also be set to 'just the name' (which will default to tenant 'public' and namespace 'default')
+  topic:
+    blockEvents: persistent://public/default/block-events
+    contractEvents: persistent://public/default/contract-events
+    transactionEvents: persistent://public/default/transaction-events
+
+# spring PostgreSQL
+spring:
+  # Database
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/eventeum
+    username: postgres
+    password: password
+  # JPA properties
+  jpa:
+    hibernate:
+      ddl-auto: update # When you launch the application for the first time - switch "none" at "create"
+    show-sql: true
+    database: eventeum
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    generate-ddl: true
+  # Logger configuration
+  logging:
+    pattern:
+      console: "%d %-5level %logger : %msg%n"
+    level:
+      org.springframework: info
+      org.hibernate: debug
+  #     jdbc:
+  #       lob:
+  #         # For postgres, see: https://github.com/pgjdbc/pgjdbc/issues/1102
+  #         non_contextual_creation: true
 
 # For Kafka
 zookeeper:
@@ -86,8 +136,6 @@ kafka:
 
     partitions: 1
     replicationSets: 1
-
-
 
 
 management:
