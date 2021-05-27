@@ -28,8 +28,9 @@ services:
       - "8545:8545"
       - "8546:8546"
     volumes:
-      - ./parity-data:/root/.local/share/io.parity.ethereum
+      - ./parity-data/io.parity.ethereum:/root/.local/share/io.parity.ethereum
       - ./parity-data/log:/data/parity-logs
+      # chown -R 1000:1000 ./parity-data
     tty: true
     networks:
       default:
@@ -37,33 +38,33 @@ services:
           - eth-node
 
   ### geth ################################################
-  geth:
-    image: ethereum/client-go
-    # restart: always
-    # container_name: geth
-    ports:
-      - 8545:8545
-      - 30303:30303
-    volumes:
-      - ./geth-data:/root
-    command:
-      - "--cache"
-      - "1024"
-      - "--syncmode"
-      - "fast"
-      - "--networkid"
-      - "1"
-      - "--maxpeers"
-      - "24"
-      - "--http"
-      - "--http.port"
-      - "8545"
-      - "--http.addr"
-      - "0.0.0.0"
-      - "--http.api"
-      - "txpool,eth,web3,admin,personal,net"
-    networks:
-      - default
+  # geth:
+  #   image: ethereum/client-go
+  #   restart: always
+  #   container_name: geth
+  #   ports:
+  #     - 8545:8545
+  #     - 30303:30303
+  #   volumes:
+  #     - ./geth-data:/root
+  #   command:
+  #     - "--cache"
+  #     - "1024"
+  #     - "--syncmode"
+  #     - "fast"
+  #     - "--networkid"
+  #     - "1"
+  #     - "--maxpeers"
+  #     - "24"
+  #     - "--http"
+  #     - "--http.port"
+  #     - "8545"
+  #     - "--http.addr"
+  #     - "0.0.0.0"
+  #     - "--http.api"
+  #     - "txpool,eth,web3,admin,personal,net"
+  #   networks:
+  #     - default
 
   mongodb:
     image: mongo:latest
@@ -97,5 +98,21 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - default
+
+  pulsar:
+    image: apachepulsar/pulsar:2.7.2
+    depends_on:
+      - zookeeper
+    ports:
+      - "6650:6650"
+      - "8080:8080"
+    volumes:
+      - ./pulsar-data/data:/pulsar/data
+      # - ./pulsar-data/conf:/pulsar/conf
+    command:
+      - "bin/pulsar"
+      - "standalone"
     networks:
       - default
