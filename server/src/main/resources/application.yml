@@ -78,7 +78,7 @@ pulsar:
   # See https://github.com/apache/pulsar/blob/master/pulsar-client/src/main/java/org/apache/pulsar/client/impl/conf/ClientConfigurationData.java
   # for available options
   config:
-    serviceUrl: pulsar://localhost:6650
+    serviceUrl: pulsar://pulsar:6650
 
   # To enable authentication, uncomment this following section
   # authentication:
@@ -98,29 +98,26 @@ spring:
   # Database
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/eventeum
+    url: jdbc:postgresql://timescaledb:5432/eventeum
     username: postgres
     password: password
   # JPA properties
   jpa:
-    hibernate:
-      ddl-auto: update # When you launch the application for the first time - switch "none" at "create"
+    database: POSTGRESQL
     show-sql: true
-    database: eventeum
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    open-in-view: false
-    generate-ddl: true
-  # Logger configuration
-  logging:
-    pattern:
-      console: "%d %-5level %logger : %msg%n"
-    level:
-      org.springframework: info
-      org.hibernate: debug
-  #     jdbc:
-  #       lob:
-  #         # For postgres, see: https://github.com/pgjdbc/pgjdbc/issues/1102
-  #         non_contextual_creation: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        #see: https://stackoverflow.com/questions/36583185/spring-data-jpa-could-not-initialize-proxy-no-session-with-methods-marke
+        enable_lazy_load_no_trans: true
+    # Hibernate ddl auto (create, create-drop, validate, update)
+    hibernate:
+      ddl-auto: update
+    jdbc:
+      lob:
+        # For postgres, see: https://github.com/pgjdbc/pgjdbc/issues/1102
+        non_contextual_creation: true
 
 # For Kafka
 zookeeper:
